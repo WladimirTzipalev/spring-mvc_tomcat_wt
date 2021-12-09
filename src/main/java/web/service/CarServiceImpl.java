@@ -1,30 +1,37 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import web.dao.CarDao;
-import web.dao.CarDaoImpl;
 import web.model.Car;
-
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CarServiceImpl implements CarService {
-    CarDao carDao = new CarDaoImpl();
-    private List<Car> cars = new ArrayList<>();
+    private CarDao carDao;
 
-    {
-        cars.add(new Car ("Chevrolet", "Cruze", 2013));
-        cars.add(new Car ("Toyota", "Camry", 2012));
-        cars.add(new Car ("Dodge", "Journey", 2013));
-        cars.add(new Car ("Skoda", "Octavia", 2010));
-        cars.add(new Car ("Kia", "Sorento", 2019));
+    @Autowired
+    public CarServiceImpl(CarDao carDao) {
+        this.carDao = carDao;
     }
 
     @Override
-    public List<Car> getCars(Integer count) {
+    public List<Car> getAllCars() {
+        return carDao.getAllCars();
+
+    }
+
+    @Override
+    public List<Car> getCountCars(Integer count) {
         if (count != null && count < 5 && count > 0) {
-            return cars.subList(0, count);
-        } else {
-            return cars;
+            return carDao.getCountCars(count);
+        }
+     else {
+            return carDao.getAllCars();
         }
     }
-}
+ }
+
+
+
+
